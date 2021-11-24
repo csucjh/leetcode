@@ -17,34 +17,36 @@
  */
 class Solution {
     public ListNode reverseBetween(ListNode head, int left, int right) {
-        // base case
-        if (left == 1) {
-            return reverseN(head, right);
+        if(left == 1){
+            // 3、退出条件——当left为1，不再是当前递归函数的含义
+            // 演变成了反转链表的前TopN节点
+            return reverseTopN(head, right);
         }
 
-        // 前进到反转的起点触发 base case
-        head.next = reverseBetween(head.next, left - 1, right - 1);
+        // 1、明确递归函数含义
+        ListNode newHead = reverseBetween(head.next, left - 1, right - 1);
+
+        // 2、将head指向反转后的newHead
+        head.next = newHead;
+
         return head;
     }
 
-    // 后驱节点
-    ListNode successor = null; 
-
-    // 反转以 head 为起点的 n 个节点，返回新的头结点
-    private ListNode reverseN(ListNode head, int n) {
-        if (n == 1) {
-            // 记录第 n + 1 个节点
-            successor = head.next;
+    public ListNode reverseTopN(ListNode head, int n){
+        if(n == 1){
+            // 6、明确退出条件——当n为1，不需要反转了，head直接返回
             return head;
         }
-        // 以 head.next 为起点，需要反转前 n - 1 个节点
-        ListNode last = reverseN(head.next, n - 1);
 
+        // 4、新递归公式含义——反转前n个节点并返回新的头结点
+        ListNode newHead = reverseTopN(head.next, n - 1);
+
+        // 5、把当前head挂到反转链上，然后将head指向第n+1个节点(这样反转链才完整)
+        ListNode successor = head.next.next;
         head.next.next = head;
-        // 让反转之后的 head 节点和后面的节点连起来
         head.next = successor;
-        
-        return last;
+
+        return newHead;
     }
 }
 // @lc code=end

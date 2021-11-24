@@ -17,30 +17,15 @@
  */
 class Solution {
 
-    int count = 0;
-
-    private void print(int count){
-        for(int i = 0; i < count; i++){
-            System.out.print("————");
-        }
-    }
-
     public ListNode reverseList(ListNode head) {
-        print(count++);
-        System.out.println("head val:" + head.val);
-        if(head.next == null){
-            print(--count);
-            System.out.println("return:" + head.val);
+        if(head == null || head.next == null){
             return head;
         }
 
         ListNode last = reverseList(head.next);
-
         head.next.next = head;
         head.next = null;
 
-        print(--count);
-        System.out.println("return:" + last.val);
         return last;
     }
 }
