@@ -13,34 +13,33 @@ class Solution {
 
         int len = s.length();
         
-        int[][] dp = new int[len][len];
+        String longest = ""; 
 
-        int start=0, end=0, maxLen = 0;
-        
-        // s[i,j] = dp[i+1][j-1] & s[i] == s[j] 
-        for(int i = len -1; i >=0; i--){
-            for(int j = i; j < len; j++){
-                // 单个字符
-                if(j == i){
-                    dp[i][j] = 1;
-                    continue;
-                }
+        for(int i = 0; i < len; i++){
+            // 如果是奇数，只有一个中心
+            String longestOne = palindrome(s, i, i);
+            
+            // 如果是偶数，有两个中心
+            String longestTwo = palindrome(s, i, i + 1);
 
-                if(s.charAt(i) == s.charAt(j)){
-                    if(j - i == 1 || dp[i+1][j-1] == 1 ){
-                        dp[i][j] = 1;
-                        if(j -i >= maxLen){
-                            maxLen = j -i;
-                            start = i;
-                            end = j;
-                        }
-                        continue;
-                    }
-                }   
-            }
+            // 比较长度
+            longest = longestOne.length() > longest.length() ? longestOne : longest;
+            longest = longestTwo.length() > longest.length() ? longestTwo : longest;
         }
 
-        return s.substring(start, end + 1);
+        return longest;
+    }
+
+    // left和right都是中心
+    public String palindrome(String s, int left, int right){
+       
+        while(left >= 0 && right < s.length() &&
+            s.charAt(left) == s.charAt(right)){
+            left--;
+            right++;
+        }
+
+        return s.substring(left + 1, right);
     }
 }
 // @lc code=end
